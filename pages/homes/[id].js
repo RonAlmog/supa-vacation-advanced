@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Layout from "@/components/Layout";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../src/prisma";
 
 const ListedHome = (home = null) => {
   return (

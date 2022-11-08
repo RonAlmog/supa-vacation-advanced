@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { getSession } from "next-auth/react";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../../src/prisma";
 
 export default async function handler(req, res) {
   const session = await getSession({ req });
@@ -14,7 +12,9 @@ export default async function handler(req, res) {
     where: { email: session.user.email },
     select: { listedHomes: true },
   });
+
   const { id } = req.query;
+  console.log("query", id);
 
   if (!user.listedHomes.find((home) => home.id === id)) {
     return res.status(401).json({ message: "Unauthorized" });
