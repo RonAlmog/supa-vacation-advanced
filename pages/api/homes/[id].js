@@ -20,7 +20,6 @@ export default async function handler(req, res) {
   });
 
   const { id } = req.query;
-  console.log("query", id);
 
   if (!user.listedHomes.find((home) => home.id === id)) {
     return res.status(401).json({ message: "Unauthorized" });

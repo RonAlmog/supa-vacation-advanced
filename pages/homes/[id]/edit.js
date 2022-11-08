@@ -5,9 +5,7 @@ import { prisma } from "../../../src/prisma";
 import axios from "axios";
 
 const Edit = (home = null) => {
-  console.log("home", home);
   const handleOnSubmit = (data) => {
-    console.log("data", data);
     axios.patch(`/api/homes/${home.id}`, data);
   };
 

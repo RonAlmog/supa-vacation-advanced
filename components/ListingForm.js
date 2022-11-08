@@ -59,7 +59,6 @@ const ListingForm = ({
       toast.success("Successfully submitted", { id: toastId });
       // Redirect user
       if (redirectPath) {
-        console.log("path", redirectPath);
         router.push(redirectPath);
       }
     } catch (e) {

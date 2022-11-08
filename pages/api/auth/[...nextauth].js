@@ -3,11 +3,13 @@ import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import nodemailer from "nodemailer";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "../../../src/prisma";
+// import { prisma } from "../../../src/prisma";
 import Handlebars from "handlebars";
 import { readFileSync } from "fs";
 import path from "path";
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 // for sending emails
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_SERVER_HOST,
@@ -91,7 +93,30 @@ export default NextAuth({
     error: "/",
     verifyRequest: "/",
   },
+  jwt: {
+    // A secret to use for key generation (you should set this explicitly)
+    secret: process.env.JWT_SECRET,
+  },
   events: {
     createUser: sendWelcomEmail,
+  },
+  callbacks: {
+    async jwt({ token, account, profile }) {
+      // Persist the OAuth access_token and or the user id to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = profile.id;
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      // console.log("token:", token);
+      // console.log("user:", user);
+      // Send properties to the client, like an access_token and user id from a provider.
+      // session.accessToken = token.accessToken;
+      session.user.id = user.id;
+
+      return session;
+    },
   },
 });

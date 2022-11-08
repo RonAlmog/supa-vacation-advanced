@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         where: { id },
         select: { owner: true },
       });
-      console.log(owner);
+
       res.status(200).json(owner);
     } catch (error) {
       res.status(500).json({ message: "Something went wrong" });

@@ -36,12 +36,11 @@ const ListedHome = (home = null) => {
       if (session?.user) {
         try {
           const owner = await axios.get(`/api/homes/${home.id}/owner`);
-          console.log("owner", owner);
-          console.log("sesssion", session);
-          setIsOwner(owner?.id === session.user.id);
-          // setIsOwner(false);
-          console.log("isOwner:", isOwner);
+          // console.log("owner", owner);
+          // console.log("sesssion", session);
+          setIsOwner(owner?.data?.id === session.user.id);
         } catch (error) {
+          console.log("Error!", error);
           setIsOwner(false);
         }
       }
@@ -90,9 +89,7 @@ const ListedHome = (home = null) => {
                 {deleting ? "Deleting..." : "Delete"}
               </button>
             </div>
-          ) : (
-            <p>nope</p>
-          )}
+          ) : null}
         </div>
         <div className="mt-6 relative aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg shadow-md overflow-hidden">
           {home?.image ? (
