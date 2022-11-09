@@ -23,6 +23,7 @@ model Home {
   updatedAt   DateTime @updatedAt
   owner       User @relation(fields: [ownerId], references: [id])
   ownerId     String
+  favoriteUsers Favorite[]
 }
 
 model Account {
@@ -63,8 +64,18 @@ model User {
   accounts      Account[]
   sessions      Session[]
   listedHomes Home[]
+  favoriteHomes Favorite[]
 }
 
+model Favorite {
+  home       Home @relation(fields:[homeId], references: [id])
+  homeId     String
+  user        User @relation(fields: [userId], references: [id])
+  userId      String
+  createdAt   DateTime @default(now())
+  createdBy   String
+  @@id([userId, homeId])
+}
 model VerificationToken {
   identifier String
   token      String   @unique
