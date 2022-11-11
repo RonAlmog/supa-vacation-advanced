@@ -14,9 +14,18 @@ export default async function handler(req, res) {
   });
 
   const { id } = req.query; // homeId
-
+  if (req.method === "GET") {
+    try {
+      const favHomes = await prisma.favorite.findMany({
+        where: { user: user.id },
+      });
+      res.status(200).json(favHomes);
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong" });
+    }
+  }
   // add home to favorites
-  if (req.method === "POST") {
+  else if (req.method === "POST") {
     try {
       const fav = await prisma.favorite.create({
         user: user.id,
